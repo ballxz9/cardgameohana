@@ -86,10 +86,11 @@ function drawCard() {
 function displayCardResult(card, action) {
     document.getElementById("card-result").innerHTML = `
         <div style="text-align: center;">
-            <img src="./${card.value}_${card.suit}.png" alt="${card.value}" style="width: 100px; display: block; margin: 0 auto;">
-            <p>คุณสุ่มได้ไพ่: ${card.value} (${getSuitName(card.suit)})</p>
-            <img src="./${getSuitImage(card.suit)}" alt="${getSuitName(card.suit)}" style="width: 50px; display: block; margin: 0 auto;">
+            
+            <p>คุณสุ่มได้ไพ่: ${card.value} ${getSuitName(card.suit)}</p>
+            
             <p>คำสั่ง: ${action}</p>
+            <img src="./${card.value}_${card.suit}.png" alt="${card.value}" style="width: 100px; display: block; margin: 0 auto;">
         </div>
     `;
 }
