@@ -88,7 +88,6 @@ function displayCardResult(card, action) {
         <div style="text-align: center;">
             
             <p>คุณสุ่มได้ไพ่: ${card.value} ${getSuitName(card.suit)}</p>
-            
             <p>คำสั่ง: ${action}</p>
             <img src="./${card.value}_${card.suit}.png" alt="${card.value}" style="width: 100px; display: block; margin: 0 auto;">
         </div>
