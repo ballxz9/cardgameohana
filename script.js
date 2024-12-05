@@ -14,9 +14,9 @@ const cardActions = {
     8: "พักผ่อน 1 นาที",
     9: "มินิเกม",
     10: "ทาแป้ง",
-    J: "จับหน้า",
-    Q: "เพื่อนไม่คบ",
-    K: "ทำตามคำสั่ง",
+    Jack: "จับหน้า",
+    Queen: "เพื่อนไม่คบ",
+    king: "ทำตามคำสั่ง",
 };
 
 // เริ่มเกม
@@ -45,7 +45,7 @@ function startGameSetup() {
 
 // สร้างสำรับไพ่
 function initializeDeck() {
-    const cards = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+    const cards = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"];
     const deck = [];
     for (const value of cards) {
         for (let suit = 1; suit <= 4; suit++) {
@@ -70,7 +70,7 @@ function drawCard() {
     if (card.value === "9") {
         const minigameIndex = drawnCards.filter((c) => c.value === "9").length - 1;
         action = gameSetup.minigames[minigameIndex];
-    } else if (card.value === "K" && drawnCards.filter((c) => c.value === "K").length > 1) {
+    } else if (card.value === "King" && drawnCards.filter((c) => c.value === "King").length > 1) {
         action = gameSetup.kingTask;
     }
 
@@ -86,7 +86,6 @@ function drawCard() {
 function displayCardResult(card, action) {
     document.getElementById("card-result").innerHTML = `
         <div style="text-align: center;">
-            
             <p>คุณสุ่มได้ไพ่: ${card.value} ${getSuitName(card.suit)}</p>
             <p>คำสั่ง: ${action}</p>
             <img src="./${card.value}_${card.suit}.png" alt="${card.value}" style="width: 100px; display: block; margin: 0 auto;">
