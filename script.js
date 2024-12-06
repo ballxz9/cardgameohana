@@ -3,6 +3,9 @@ let drawnCards = [];
 let gameSetup = {};
 let isPopupOpen = false;
 
+let timerInterval; // ตัวจับเวลา
+let elapsedSeconds = 0; // เวลาเริ่มต้น
+
 const cardActions = {
     A: "กินคนเดียว",
     2: "หาเพื่อนกิน 1 คน",
@@ -23,6 +26,29 @@ const cardActions = {
 function showSetup() {
     document.getElementById("intro-area").classList.add("hidden");
     document.getElementById("setup-popup").classList.remove("hidden");
+}
+
+// ฟังก์ชันเริ่มจับเวลา
+function startTimer() {
+    elapsedSeconds = 0; // เริ่มใหม่
+    const timerDisplay = document.getElementById("timer-display");
+    timerInterval = setInterval(() => {
+        elapsedSeconds++;
+        const hours = Math.floor(elapsedSeconds / 3600);
+        const minutes = Math.floor((elapsedSeconds % 3600) / 60);
+        const seconds = elapsedSeconds % 60;
+        timerDisplay.textContent = `${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`;
+    }, 1000);
+}
+
+// ฟังก์ชันหยุดจับเวลา
+function stopTimer() {
+    clearInterval(timerInterval);
+}
+
+// ฟังก์ชันเติมเลข 0 ให้ตัวเลข
+function padZero(num) {
+    return num < 10 ? `0${num}` : num;
 }
 
 // ตั้งค่าเกม
@@ -47,6 +73,8 @@ function startGameSetup() {
     drawnCards = [];
     document.getElementById("setup-popup").classList.add("hidden");
     document.getElementById("game-area").classList.remove("hidden");
+
+    startTimer(); // เริ่มจับเวลา
 }
 
 // สร้างสำรับไพ่
@@ -67,6 +95,7 @@ function drawCard() {
 
     if (remainingCards.length === 0) {
         alert("ไพ่หมดแล้ว! คลิก 'เริ่มเกมใหม่' เพื่อเริ่มเกมอีกครั้ง.");
+        stopTimer(); // หยุดจับเวลาเมื่อไพ่หมด
         return;
     }
 
@@ -104,7 +133,7 @@ function showPopup(card, action) {
     const popupContent = document.getElementById("popup-content");
     popupContent.innerHTML = `
         <img src="./${card.value}_${card.suit}.png" alt="${card.value}" class="card-image">
-        <p>ไพ่ที่คุณสุ่มได้: <strong>${card.value}</strong></p>
+       <p>คุณสุ่มได้ไพ่: ${card.value} ${getSuitName(card.suit)}</p>
         <p>คำสั่ง: ${action}</p>
     `;
     document.getElementById("result-popup").classList.remove("hidden");
@@ -114,4 +143,9 @@ function showPopup(card, action) {
 function closePopup() {
     isPopupOpen = false;
     document.getElementById("result-popup").classList.add("hidden");
+}
+// ฟังก์ชันแปลงชนิดดอกไพ่
+function getSuitName(suit) {
+    const suitNames = ["โพดำ", "หัวใจ", "ดอกจิก", "ข้าวหลามตัด"];
+    return suitNames[suit - 1];
 }
