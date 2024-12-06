@@ -9,19 +9,26 @@
 </head>
 
 <body>
+    <!-- หน้าเริ่มต้น -->
+    <div id="intro-area">
+        <h1>OHANA Card Game</h1>
+        <p>เกมสนุกๆ ที่ทุกคนต้องลอง!</p>
+        <button class="btn" onclick="showSetup()">เริ่มต้น</button>
+    </div>
+
     <!-- Popup ตั้งค่าก่อนเริ่มเกม -->
-    <div id="setup-popup" class="popup">
+    <div id="setup-popup" class="popup hidden">
         <div class="popup-content">
-            <h2>ตั้งค่าก่อนเริ่มเกม</h2>
+            <h2>คำสั่งก่อนเริ่มเกม</h2>
             <div class="form-group">
-                <label>มินิเกมไพ่ 9:</label>
+                <label>มินิเกมไพ่ 9:</label><br><br>
                 <input type="text" id="minigame1" placeholder="มินิเกม 1">
                 <input type="text" id="minigame2" placeholder="มินิเกม 2">
                 <input type="text" id="minigame3" placeholder="มินิเกม 3">
-                <input type="text" id="minigame4" placeholder="มินิเกม 4">
+                <input type="text" id="minigame4" placeholder="มินิเกม 4"><br><br>
             </div>
             <div class="form-group">
-                <label>คำสั่งสำหรับไพ่ K แรก:</label>
+                <label>คำสั่งสำหรับไพ่ K แรก:</label><br><br>
                 <input type="text" id="king-task" placeholder="คำสั่ง">
             </div>
             <button class="btn" id="start-button" onclick="startGameSetup()">ยืนยัน</button>
@@ -31,19 +38,24 @@
     <!-- พื้นที่สุ่มไพ่ -->
     <div id="game-area" class="hidden">
         <h2>สุ่มไพ่</h2>
-        <img src="bg.png" id="card-back" alt="กดเพื่อสุ่มไพ่" onclick="drawCard()"
-            style="cursor: pointer; width: 150px;">
-        <!-- ผลลัพธ์จะแสดงที่นี่ -->
-         <!-- Popup สำหรับแสดงผลลัพธ์ -->
-         <div id="result-popup" class="popup hidden">
+        <img src="bg.png" id="card-back" class="card-back" alt="กดเพื่อสุ่มไพ่" onclick="drawCard()">
+        
+        <div id="result-popup" class="popup hidden">
             <div class="popup-content" id="popup-content"></div>
-            <button onclick="closePopup()">ปิด</button>
+            <button class="btn" onclick="closePopup()">ปิด</button>
         </div>
 
-        <div>
-            <button id="restart-button" class="btn hidden" onclick="location.reload()">เริ่มเกมใหม่</button>
+        <div id="history-area">
+            <h3>ไพ่ที่สุ่มไปแล้ว:</h3>
+            <div id="history" class="container"></div>
         </div>
+
+        <button id="restart-button" class="btn hidden" onclick="location.reload()">เริ่มเกมใหม่</button>
     </div>
+
+    <!-- เสียง -->
+    <audio id="card-draw-sound" src="card-draw.mp3"></audio>
+    <audio id="popup-sound" src="popup.mp3"></audio>
 
     <script src="script.js"></script>
 </body>

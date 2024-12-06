@@ -1,74 +1,60 @@
-.popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    border: 2px solid black;
-    padding: 20px;
-    z-index: 1000;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 300px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.popup.hidden {
-    display: none;
-}
-
-.popup-content img {
-    width: 100px;
-    margin-bottom: 10px;
-}
-
-.btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 14px;
-    margin-top: 10px;
-}
-
-.btn:hover {
-    background-color: #0056b3;
-}
-
-/* General Styling */
+/* พื้นหลังและฟอนต์ */
 body {
-    font-size: 16px;
-    padding: 20px;  
+    background: linear-gradient(135deg, #ffc5c5, #ffc5c5);
+    color: #000000;
+    font-family: 'Arial', sans-serif;
     text-align: center;
+    margin: 0;
+    padding: 0;
 }
 
-h1 {
-    margin-top: 20px;
-    font-size: 2em;
+h1{
+    font-size: 40px;
+    margin: 10px 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+h2{
+    font-size: 40px;
+    margin: 10px 0;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.hidden {
-    display: none;
+h3 {
+    font-size: 20px;
+    margin: 10px 0;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
+p {
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* หน้าเริ่มต้น */
+#intro-area {
+    margin-top: 50px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+#intro-area h1 {
+    font-size: 3em;
+    margin-bottom: 10px;
+}
+
+/* Popup */
 .popup {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     background: white;
-    border: 2px solid black;
+    border-radius: 15px;
     padding: 20px;
     z-index: 1000;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px #ffffff;
     width: 300px;
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    animation: fadeIn 0.5s ease-in-out;
 }
 
 .popup.hidden {
@@ -79,94 +65,68 @@ h1 {
     width: 100px;
     margin-bottom: 10px;
 }
-.popup-content {
-    text-align: center;
-}
-.form-group {
-    margin-bottom: 20px;
+
+.popup-content p {
+    margin: 10px 0;
 }
 
-input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1em;
-}
-
-.btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 15px;
+/* การ์ด */
+.card-back {
+    width: 150px;
     cursor: pointer;
-    font-size: 14px;
-    margin-top: 10px;
+    transition: transform 0.3s;
 }
 
+.card-back:hover {
+    transform: scale(1.1);
+}
+
+/* ปุ่ม */
+.btn {
+    background: linear-gradient(45deg, #c7c7c7, #c7c7c7);
+    border: none;
+    border-radius: 25px;
+    color: white;
+    font-size: 16px;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    margin-top: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
 
 .btn:hover {
-    background-color: #0056b3;
-}
-
-/* Game Area */
-.card-container {
-    margin-top: 30px;
-}
-
-.card {
-    width: 200px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.card:hover {
+    background: linear-gradient(45deg, #c7c7c7, #c7c7c7);
     transform: scale(1.1);
 }
 
-.result-area {
-    margin-top: 20px;
-    font-size: 1.2em;
-    line-height: 1.5;
-}
-#game-area {
-    text-align: center;
-    margin-top: 50px;
-}
-
-#card-back {
-    transition: transform 0.2s;
-}
-
-#card-back:hover {
-    transform: scale(1.1);
-}
-.onimg{
-    margin: 2%;
-}
-.container {
+/* พื้นที่ประวัติ */
+#history {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-  }
-  
-  .item {
-    flex: 1 1 200px; /* ยืดหยุ่นได้ตามขนาดหน้าจอ */
-    margin: 10px;
-  }
-  
-/* การตั้งค่าสำหรับหน้าจอขนาดเล็ก (มือถือ) */
-@media screen and (max-width: 768px) {
-    body {
-      font-size: 14px;
-      padding: 10px;
+    margin-top: 10px;
+}
+
+.history-card {
+    width: 50px;
+    margin: 5px;
+    transition: transform 0.2s;
+}
+
+.history-card:hover {
+    transform: scale(1.2);
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
     }
-  }
-  
-  @media screen and (max-width: 480px) {
-    body {
-      font-size: 12px;
-      padding: 5px;
+
+    to {
+        opacity: 1;
+        transform: scale(1);
     }
-  }
+}

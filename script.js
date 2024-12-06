@@ -1,9 +1,8 @@
 let remainingCards = [];
 let drawnCards = [];
 let gameSetup = {};
-let isPopupOpen = false; // สถานะว่า Popup เปิดอยู่หรือไม่
+let isPopupOpen = false;
 
-// คำสั่งไพ่
 const cardActions = {
     A: "กินคนเดียว",
     2: "หาเพื่อนกิน 1 คน",
@@ -11,7 +10,7 @@ const cardActions = {
     4: "ซ้ายกิน",
     5: "กินรอบวง",
     6: "ขวากิน",
-    7: "มินิเกมส์แข่งลากเสียง คนแพ้เป็นบัดดี้จนจบเกม",
+    7: "มินิเกมส์",
     8: "พักผ่อน 1 นาที",
     9: "มินิเกม",
     10: "ทาแป้ง",
@@ -20,7 +19,13 @@ const cardActions = {
     King: "ทำตามคำสั่ง",
 };
 
-// เริ่มเกม
+// แสดงหน้าตั้งค่า
+function showSetup() {
+    document.getElementById("intro-area").classList.add("hidden");
+    document.getElementById("setup-popup").classList.remove("hidden");
+}
+
+// ตั้งค่าเกม
 function startGameSetup() {
     const minigame1 = document.getElementById("minigame1").value.trim();
     const minigame2 = document.getElementById("minigame2").value.trim();
@@ -58,65 +63,55 @@ function initializeDeck() {
 
 // สุ่มไพ่
 function drawCard() {
-    if (isPopupOpen) {
-        alert("ปิด Popup ก่อนเพื่อสุ่มไพ่ใหม่!");
-        return;
-    }
+    if (isPopupOpen) return;
 
     if (remainingCards.length === 0) {
         alert("ไพ่หมดแล้ว! คลิก 'เริ่มเกมใหม่' เพื่อเริ่มเกมอีกครั้ง.");
         return;
     }
 
+    const sound = document.getElementById("card-draw-sound");
+    sound.play();
+
     const randomIndex = Math.floor(Math.random() * remainingCards.length);
     const card = remainingCards.splice(randomIndex, 1)[0];
     drawnCards.push(card);
 
     let action = cardActions[card.value];
-
     if (card.value === "9") {
         const minigameIndex = drawnCards.filter((c) => c.value === "9").length - 1;
-        action = gameSetup.minigames[minigameIndex];
-    } else if (card.value === "King") {
-        const kingIndex = drawnCards.filter((c) => c.value === "King").length;
-        if (kingIndex === 1) {
-            action = gameSetup.kingTask;
-        } else {
-            action = "ทำตามคำสั่ง KING ก่อนหน้า";
-        }
+        action = gameSetup.minigames[minigameIndex] || "ไม่มีมินิเกม!";
+    } else if (card.value === "King" && drawnCards.filter((c) => c.value === "King").length === 1) {
+        action = gameSetup.kingTask;
     }
 
     showPopup(card, action);
 
-    if (remainingCards.length === 0) {
-        document.getElementById("restart-button").classList.remove("hidden");
-    }
+    const historyArea = document.getElementById("history");
+    const historyCard = document.createElement("img");
+    historyCard.src = `./${card.value}_${card.suit}.png`;
+    historyCard.alt = card.value;
+    historyCard.className = "history-card";
+    historyArea.appendChild(historyCard);
 }
 
-// แสดง Popup ผลลัพธ์
+// แสดง popup
 function showPopup(card, action) {
-    isPopupOpen = true; // เปิดสถานะ Popup
-    document.getElementById("popup-content").innerHTML = `
-        <img src="./${card.value}_${card.suit}.png" alt="${card.value}" style="width: 100px;">
-        <p>คุณสุ่มได้ไพ่: ${card.value} ${getSuitName(card.suit)}</p>
+    isPopupOpen = true;
+    const popupSound = document.getElementById("popup-sound");
+    popupSound.play();
+
+    const popupContent = document.getElementById("popup-content");
+    popupContent.innerHTML = `
+        <img src="./${card.value}_${card.suit}.png" alt="${card.value}" class="card-image">
+        <p>ไพ่ที่คุณสุ่มได้: <strong>${card.value}</strong></p>
         <p>คำสั่ง: ${action}</p>
     `;
     document.getElementById("result-popup").classList.remove("hidden");
 }
 
-// ปิด Popup
+// ปิด popup
 function closePopup() {
-    isPopupOpen = false; // ปิดสถานะ Popup
+    isPopupOpen = false;
     document.getElementById("result-popup").classList.add("hidden");
-}
-
-// ฟังก์ชันแปลงชนิดดอกไพ่
-function getSuitName(suit) {
-    const suitNames = ["โพดำ", "หัวใจ", "ดอกจิก", "ข้าวหลามตัด"];
-    return suitNames[suit - 1];
-}
-
-// รีเซ็ตเกม
-function restartGame() {
-    location.reload(); // รีโหลดหน้าเว็บ
 }
