@@ -1,6 +1,7 @@
 let remainingCards = [];
 let drawnCards = [];
 let gameSetup = {};
+let isPopupOpen = false; // สถานะว่า Popup เปิดอยู่หรือไม่
 
 // คำสั่งไพ่
 const cardActions = {
@@ -16,7 +17,7 @@ const cardActions = {
     10: "ทาแป้ง",
     Jack: "จับหน้า",
     Queen: "เพื่อนไม่คบ",
-    king: "ทำตามคำสั่ง",
+    King: "ทำตามคำสั่ง",
 };
 
 // เริ่มเกม
@@ -57,6 +58,11 @@ function initializeDeck() {
 
 // สุ่มไพ่
 function drawCard() {
+    if (isPopupOpen) {
+        alert("ปิด Popup ก่อนเพื่อสุ่มไพ่ใหม่!");
+        return;
+    }
+
     if (remainingCards.length === 0) {
         alert("ไพ่หมดแล้ว! คลิก 'เริ่มเกมใหม่' เพื่อเริ่มเกมอีกครั้ง.");
         return;
@@ -67,53 +73,50 @@ function drawCard() {
     drawnCards.push(card);
 
     let action = cardActions[card.value];
+
     if (card.value === "9") {
         const minigameIndex = drawnCards.filter((c) => c.value === "9").length - 1;
         action = gameSetup.minigames[minigameIndex];
-    } else if (card.value === "King" && drawnCards.filter((c) => c.value === "King").length > 1) {
-        action = gameSetup.kingTask;
+    } else if (card.value === "King") {
+        const kingIndex = drawnCards.filter((c) => c.value === "King").length;
+        if (kingIndex === 1) {
+            action = gameSetup.kingTask;
+        } else {
+            action = "ทำตามคำสั่ง KING ก่อนหน้า";
+        }
     }
 
-    displayCardResult(card, action);
+    showPopup(card, action);
 
-    // แสดงปุ่ม "เริ่มเกมใหม่" เมื่อไพ่หมด
     if (remainingCards.length === 0) {
         document.getElementById("restart-button").classList.remove("hidden");
     }
 }
 
-// แสดงผลลัพธ์ไพ่
-function displayCardResult(card, action) {
-    document.getElementById("card-result").innerHTML = `
-        <div style="text-align: center;">
-            <p>คุณสุ่มได้ไพ่: ${card.value} ${getSuitName(card.suit)}</p>
-            <p>คำสั่ง: ${action}</p>
-            <img src="./${card.value}_${card.suit}.png" alt="${card.value}" style="width: 100px; display: block; margin: 0 auto;">
-        </div>
+// แสดง Popup ผลลัพธ์
+function showPopup(card, action) {
+    isPopupOpen = true; // เปิดสถานะ Popup
+    document.getElementById("popup-content").innerHTML = `
+        <img src="./${card.value}_${card.suit}.png" alt="${card.value}" style="width: 100px;">
+        <p>คุณสุ่มได้ไพ่: ${card.value} ${getSuitName(card.suit)}</p>
+        <p>คำสั่ง: ${action}</p>
     `;
+    document.getElementById("result-popup").classList.remove("hidden");
 }
 
+// ปิด Popup
+function closePopup() {
+    isPopupOpen = false; // ปิดสถานะ Popup
+    document.getElementById("result-popup").classList.add("hidden");
+}
 
 // ฟังก์ชันแปลงชนิดดอกไพ่
 function getSuitName(suit) {
-    const suitNames = ["โพดำ", "โพแดง", "ดอกจิก", "ข้าวหลามตัด"];
+    const suitNames = ["โพดำ", "หัวใจ", "ดอกจิก", "ข้าวหลามตัด"];
     return suitNames[suit - 1];
 }
 
-// ฟังก์ชันแปลงชื่อไฟล์รูปดอกไพ่
-function getSuitImage(suit) {
-    const suitImages = ["spades.png", "hearts.png", "clubs.png", "diamonds.png"];
-    return suitImages[suit - 1];
-}   x
-
-// เริ่มเกมใหม่
+// รีเซ็ตเกม
 function restartGame() {
-    remainingCards = initializeDeck();
-    drawnCards = [];
-    document.getElementById("card-result").innerHTML = "";
-    document.getElementById("restart-button").classList.add("hidden");
-}
-// เริ่มเกมใหม่
-function restartGame() {
-    location.reload(); // รีโหลดหน้าเว็บใหม่
+    location.reload(); // รีโหลดหน้าเว็บ
 }
